@@ -12,6 +12,7 @@ class Room extends Model
         'room_type',
         'square_foot',
         'price_per_month',
+        'thumbnail',
         'is_available'
     ];
 }
