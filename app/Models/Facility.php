@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Facility extends Model
 {
@@ -12,4 +13,9 @@ class Facility extends Model
         'description',
         'image'
     ];
+
+    public function boardingHouse(): BelongsTo
+    {
+        return $this->belongsTo(BoardingHouse::class);
+    }
 }
