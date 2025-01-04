@@ -39,7 +39,8 @@ class CityResource extends Resource
                     ->readOnly(),
                 Forms\Components\FileUpload::make('image')
                     ->image()
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->directory('cities'),
             ]);
     }
 
