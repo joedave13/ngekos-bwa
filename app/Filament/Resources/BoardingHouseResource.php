@@ -6,7 +6,10 @@ use App\Filament\Resources\BoardingHouseResource\Pages;
 use App\Filament\Resources\BoardingHouseResource\RelationManagers;
 use App\Models\BoardingHouse;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
 use Filament\Resources\Resource;
@@ -34,38 +37,56 @@ class BoardingHouseResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255)
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state) . '-' . strtolower(Str::random(6)))),
-                Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->maxLength(255)
-                    ->readOnly(),
-                Grid::make(3)
+                Section::make('General Information')
+                    ->columns(2)
+                    ->description('General information about the boarding house')
+                    ->icon('heroicon-s-home-modern')
                     ->schema([
-                        Forms\Components\Select::make('city_id')
-                            ->relationship('city', 'name')
+                        Forms\Components\TextInput::make('name')
                             ->required()
-                            ->preload()
-                            ->searchable(),
-                        Forms\Components\Select::make('category_id')
-                            ->relationship('category', 'name')
+                            ->maxLength(255)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state) . '-' . strtolower(Str::random(6)))),
+                        Forms\Components\TextInput::make('slug')
                             ->required()
-                            ->preload()
-                            ->searchable(),
-                        Forms\Components\TextInput::make('price')
-                            ->required()
-                            ->numeric()
-                            ->prefix('IDR'),
+                            ->maxLength(255)
+                            ->readOnly(),
+                        Grid::make(3)
+                            ->schema([
+                                Forms\Components\Select::make('city_id')
+                                    ->relationship('city', 'name')
+                                    ->required()
+                                    ->preload()
+                                    ->searchable(),
+                                Forms\Components\Select::make('category_id')
+                                    ->relationship('category', 'name')
+                                    ->required()
+                                    ->preload()
+                                    ->searchable(),
+                                Forms\Components\TextInput::make('price')
+                                    ->required()
+                                    ->numeric()
+                                    ->prefix('IDR'),
+                            ]),
+                        Forms\Components\FileUpload::make('thumbnail')
+                            ->image()
+                            ->columnSpanFull()
+                            ->directory('boarding-houses'),
+                        Forms\Components\RichEditor::make('description'),
+                        Forms\Components\RichEditor::make('address'),
                     ]),
-                Forms\Components\FileUpload::make('thumbnail')
-                    ->image()
-                    ->columnSpanFull()
-                    ->directory('boarding-houses'),
-                Forms\Components\RichEditor::make('description'),
-                Forms\Components\RichEditor::make('address'),
+                Section::make("Boarding House's Image")
+                    ->description('Images of the boarding house')
+                    ->icon('heroicon-s-photo')
+                    ->schema([
+                        Repeater::make('boardingHouseImages')
+                            ->relationship()
+                            ->schema([
+                                FileUpload::make('image')
+                                    ->image()
+                                    ->directory('boarding-houses/images')
+                            ])
+                    ]),
             ]);
     }
 
@@ -78,9 +99,9 @@ class BoardingHouseResource extends Resource
                     ->alignment(Alignment::Center)
                     ->defaultImageUrl('https://placehold.co/400'),
                 Tables\Columns\TextColumn::make('name')
+                    ->description(fn(BoardingHouse $record) => $record->category->name)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('city.name')
-                    ->description(fn(BoardingHouse $record) => $record->category->name)
                     ->numeric(),
                 Tables\Columns\TextColumn::make('price')
                     ->numeric()
@@ -115,9 +136,7 @@ class BoardingHouseResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
