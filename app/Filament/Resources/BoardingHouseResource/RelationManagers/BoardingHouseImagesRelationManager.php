@@ -26,7 +26,7 @@ class BoardingHouseImagesRelationManager extends RelationManager
                 Forms\Components\FileUpload::make('image')
                     ->required()
                     ->image()
-                    ->directory('boarding-houses/image')
+                    ->directory('boarding-houses/images')
                     ->columnSpanFull(),
             ]);
     }

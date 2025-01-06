@@ -20,7 +20,13 @@ class FacilitiesRelationManager extends RelationManager
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->columnSpanFull(),
+                Forms\Components\RichEditor::make('description'),
+                Forms\Components\FileUpload::make('image')
+                    ->image()
+                    ->required()
+                    ->directory('boarding-houses/facilities')
             ]);
     }
 
@@ -29,13 +35,23 @@ class FacilitiesRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->columns([
+                Tables\Columns\ImageColumn::make('image')
+                    ->width(120)
+                    ->height(80)
+                    ->extraImgAttributes([
+                        'class' => 'rounded-md'
+                    ]),
                 Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('description')
+                    ->html(),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->label('New Facility')
+                    ->icon('heroicon-m-plus'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
