@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\RoomType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,11 +13,20 @@ class Room extends Model
         'boarding_house_id',
         'name',
         'room_type',
-        'square_foot',
+        'square_feet',
+        'capacity',
         'price_per_month',
         'thumbnail',
         'is_available'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'room_type' => RoomType::class,
+            'is_available' => 'boolean',
+        ];
+    }
 
     public function transactions(): HasMany
     {

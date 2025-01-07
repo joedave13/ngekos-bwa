@@ -5,6 +5,7 @@ namespace App\Filament\Resources\BoardingHouseResource\Pages;
 use App\Filament\Resources\BoardingHouseResource;
 use App\Filament\Resources\BoardingHouseResource\RelationManagers\BoardingHouseImagesRelationManager;
 use App\Filament\Resources\BoardingHouseResource\RelationManagers\FacilitiesRelationManager;
+use App\Filament\Resources\BoardingHouseResource\RelationManagers\RoomsRelationManager;
 use Filament\Actions;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\ImageEntry;
@@ -58,7 +59,8 @@ class ViewBoardingHouse extends ViewRecord
     {
         return [
             BoardingHouseImagesRelationManager::class,
-            FacilitiesRelationManager::class
+            FacilitiesRelationManager::class,
+            RoomsRelationManager::class,
         ];
     }
 }
