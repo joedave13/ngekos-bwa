@@ -6,6 +6,7 @@ use App\Filament\Resources\BoardingHouseResource;
 use App\Filament\Resources\BoardingHouseResource\RelationManagers\BoardingHouseImagesRelationManager;
 use App\Filament\Resources\BoardingHouseResource\RelationManagers\FacilitiesRelationManager;
 use App\Filament\Resources\BoardingHouseResource\RelationManagers\RoomsRelationManager;
+use App\Filament\Resources\BoardingHouseResource\RelationManagers\TestimonialsRelationManager;
 use Filament\Actions;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\ImageEntry;
@@ -61,6 +62,7 @@ class ViewBoardingHouse extends ViewRecord
             BoardingHouseImagesRelationManager::class,
             FacilitiesRelationManager::class,
             RoomsRelationManager::class,
+            TestimonialsRelationManager::class
         ];
     }
 }
