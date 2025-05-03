@@ -179,8 +179,7 @@
         </div>
     </section>
 
-    @component('components.bottom-nav')
-    @endcomponent
+    @include('components.bottom-nav')
 @endsection
 
 @push('scripts')
