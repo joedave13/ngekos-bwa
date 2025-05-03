@@ -13,4 +13,12 @@ enum TransactionPaymentMethod: string implements HasLabel
     {
         return str(str($this->value)->replace('_', ' '))->title();
     }
+
+    public function getColor(): string
+    {
+        return match ($this) {
+            self::DOWN_PAYMENT => 'info',
+            self::FULL_PAYMENT => 'primary',
+        };
+    }
 }

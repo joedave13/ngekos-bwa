@@ -14,4 +14,13 @@ enum TransactionPaymentStatus: string implements HasLabel
     {
         return str(str($this->value)->replace('_', ' '))->title();
     }
+
+    public function getColor(): string
+    {
+        return match ($this) {
+            self::PENDING => 'warning',
+            self::SUCCESS => 'success',
+            self::FAILED => 'danger',
+        };
+    }
 }

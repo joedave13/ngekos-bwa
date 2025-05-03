@@ -18,6 +18,7 @@ use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -202,52 +203,41 @@ class TransactionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('code')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('phone')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('boardingHouse.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('room.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('start_date')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('end_date')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('duration_in_month')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('price')
-                    ->money()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('sub_total')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('vat')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('insurance_amount')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('grand_total_amount')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('payment_method')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('payment_status')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Transaction Date'),
+                Tables\Columns\TextColumn::make('code')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->description(fn(Transaction $record) => $record->phone)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('boardingHouse.name')
+                    ->description(fn(Transaction $record) => $record->room->name)
+                    ->numeric()
+                    ->sortable()
+                    ->label('Boarding House'),
+                Tables\Columns\TextColumn::make('date_duration')
+                    ->sortable()
+                    ->state(function (Transaction $record) {
+                        return $record->start_date->format('d M Y') . ' - ' . $record->end_date->format('d M Y');
+                    })
+                    ->label('Date Duration'),
+                Tables\Columns\TextColumn::make('grand_total_amount')
+                    ->numeric(thousandsSeparator: '.')
+                    ->sortable()
+                    ->prefix('IDR ')
+                    ->label('Grand Total Amount'),
+                Tables\Columns\TextColumn::make('payment_method')
+                    ->searchable()
+                    ->badge()
+                    ->color(fn($state) => $state->getColor())
+                    ->label('Payment Method'),
+                Tables\Columns\TextColumn::make('payment_status')
+                    ->searchable()
+                    ->badge()
+                    ->color(fn($state) => $state->getColor())
+                    ->label('Payment Status'),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
@@ -257,8 +247,18 @@ class TransactionResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+                    ActionGroup::make([
+                        Tables\Actions\ViewAction::make()
+                            ->color('info'),
+                        Tables\Actions\EditAction::make()
+                            ->color('warning'),
+                    ])
+                        ->dropdown(false),
+                    Tables\Actions\DeleteAction::make(),
+                ])
+                    ->icon('heroicon-m-bars-3')
+                    ->color('primary'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
