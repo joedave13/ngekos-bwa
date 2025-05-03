@@ -15,7 +15,7 @@
 <body>
     <div id="Content-Container"
         class="relative flex flex-col w-full max-w-[640px] min-h-screen mx-auto bg-white overflow-x-hidden">
-        @yield('section')
+        @yield('content')
     </div>
 
     @stack('scripts')
