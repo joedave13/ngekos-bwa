@@ -151,6 +151,7 @@ class TransactionResource extends Resource
                     ]),
                 Section::make('Payment Information')
                     ->description('Information about the payment')
+                    ->icon('heroicon-m-credit-card')
                     ->columns(2)
                     ->schema([
                         Forms\Components\TextInput::make('sub_total')
@@ -158,13 +159,15 @@ class TransactionResource extends Resource
                             ->numeric()
                             ->readOnly()
                             ->prefix('IDR')
-                            ->label('Sub Total'),
+                            ->label('Sub Total')
+                            ->default(0),
                         Forms\Components\TextInput::make('vat')
                             ->required()
                             ->numeric()
                             ->readOnly()
                             ->prefix('IDR')
-                            ->label('VAT (11%)'),
+                            ->label('VAT (11%)')
+                            ->default(0),
                         Forms\Components\TextInput::make('insurance_amount')
                             ->required()
                             ->numeric()
@@ -175,13 +178,15 @@ class TransactionResource extends Resource
                                 $grandTotalAmount = $get('sub_total') + $get('vat') + $state;
 
                                 $set('grand_total_amount', $grandTotalAmount);
-                            }),
+                            })
+                            ->default(0),
                         Forms\Components\TextInput::make('grand_total_amount')
                             ->required()
                             ->numeric()
                             ->readOnly()
                             ->prefix('IDR')
-                            ->label('Grand Total Amount'),
+                            ->label('Grand Total Amount')
+                            ->default(0),
                         Forms\Components\Select::make('payment_method')
                             ->required()
                             ->label('Payment Method')
