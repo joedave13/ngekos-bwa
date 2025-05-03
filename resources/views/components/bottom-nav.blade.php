@@ -11,9 +11,9 @@
                      class="w-8 h-8 flex shrink-0" alt="icon">
                  <span class="font-semibold text-sm text-white">Orders</span>
              </a>
-             <a href="find-kos.html" class="flex flex-col items-center text-center gap-2">
-                 <img src="{{ asset('assets/images/icons/search-status.svg') }}" class="w-8 h-8 flex shrink-0"
-                     alt="icon">
+             <a href="{{ route('boarding-house.find') }}" class="flex flex-col items-center text-center gap-2">
+                 <img src="{{ request()->routeIs('boarding-house.find') ? asset('assets/images/icons/search-status-green.svg') : asset('assets/images/icons/search-status.svg') }}"
+                     class="w-8 h-8 flex shrink-0" alt="icon">
                  <span class="font-semibold text-sm text-white">Find</span>
              </a>
              <a href="#" class="flex flex-col items-center text-center gap-2">
