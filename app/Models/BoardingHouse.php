@@ -16,8 +16,17 @@ class BoardingHouse extends Model
         'category_id',
         'description',
         'price',
-        'address'
+        'address',
+        'is_popular'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'price' => 'integer',
+            'is_popular' => 'boolean',
+        ];
+    }
 
     public function boardingHouseImages(): HasMany
     {

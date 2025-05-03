@@ -42,15 +42,22 @@ class BoardingHouseResource extends Resource
                     ->description('General information about the boarding house')
                     ->icon('heroicon-s-home-modern')
                     ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255)
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state) . '-' . strtolower(Str::random(6)))),
-                        Forms\Components\TextInput::make('slug')
-                            ->required()
-                            ->maxLength(255)
-                            ->readOnly(),
+                        Grid::make(3)
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state) . '-' . strtolower(Str::random(6)))),
+                                Forms\Components\TextInput::make('slug')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->readOnly(),
+                                Forms\Components\Toggle::make('is_popular')
+                                    ->default(false)
+                                    ->inline(false)
+                                    ->label('Is Popular?')
+                            ]),
                         Grid::make(3)
                             ->schema([
                                 Forms\Components\Select::make('city_id')
@@ -108,6 +115,8 @@ class BoardingHouseResource extends Resource
                     ->prefix('IDR ')
                     ->sortable()
                     ->label('Price per Month'),
+                Tables\Columns\ToggleColumn::make('is_popular')
+                    ->label('Is Popular?'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

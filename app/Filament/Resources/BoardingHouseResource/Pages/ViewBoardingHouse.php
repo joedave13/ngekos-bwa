@@ -9,6 +9,7 @@ use App\Filament\Resources\BoardingHouseResource\RelationManagers\RoomsRelationM
 use App\Filament\Resources\BoardingHouseResource\RelationManagers\TestimonialsRelationManager;
 use Filament\Actions;
 use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
@@ -38,8 +39,13 @@ class ViewBoardingHouse extends ViewRecord
                 ->description('General information about the boarding house')
                 ->icon('heroicon-s-home-modern')
                 ->schema([
-                    TextEntry::make('name'),
-                    TextEntry::make('slug'),
+                    Grid::make(3)->schema([
+                        TextEntry::make('name'),
+                        TextEntry::make('slug'),
+                        IconEntry::make('is_popular')
+                            ->boolean()
+                            ->label('Is Popular?')
+                    ]),
                     Grid::make(3)->schema([
                         TextEntry::make('city.name'),
                         TextEntry::make('category.name'),
