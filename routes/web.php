@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BoardingHouseController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CityController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,14 @@ Route::controller(CategoryController::class)
     ->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/{category:slug}', 'show')->name('show');
+    });
+
+Route::controller(CityController::class)
+    ->prefix('city')
+    ->name('city.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{city:slug}', 'show')->name('show');
     });
 
 Route::controller(BoardingHouseController::class)
