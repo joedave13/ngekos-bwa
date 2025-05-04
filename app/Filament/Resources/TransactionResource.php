@@ -32,6 +32,11 @@ class TransactionResource extends Resource
 
     protected static ?string $navigationGroup = 'Transaction';
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->with('room:id,name');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

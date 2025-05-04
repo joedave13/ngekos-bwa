@@ -12,9 +12,19 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class TransactionController extends Controller
 {
+    public function __construct()
+    {
+        Config::$serverKey = config('services.midtrans.serverKey');
+        Config::$isProduction = config('services.midtrans.isProduction');
+        Config::$isSanitized = config('services.midtrans.isSanitized');
+        Config::$is3ds = config('services.midtrans.is3ds');
+    }
+
     public function saveBoardingHouseRoom(StoreBoardingHouseRoomRequest $request)
     {
         Session::forget('transaction_data');
@@ -105,6 +115,29 @@ class TransactionController extends Controller
         $transaction = Transaction::query()->create($data);
 
         Session::forget('transaction_data');
+
+        $midtransParams = [
+            'transaction_details' => [
+                'order_id' => $transaction->code,
+                'gross_amount' => $transaction->grand_total_amount
+            ],
+            'customer_details' => [
+                'first_name' => $transaction->name,
+                'email' => $transaction->email,
+                'phone' => $transaction->phone
+            ]
+        ];
+
+        $midtransTransaction = Snap::createTransaction($midtransParams);
+
+        $transaction->update(['midtrans_snap_token' => $midtransTransaction->token]);
+
+        return redirect($midtransTransaction->redirect_url);
+    }
+
+    public function success(Request $request)
+    {
+        return view('pages.transaction.success');
     }
 
     public function check()
