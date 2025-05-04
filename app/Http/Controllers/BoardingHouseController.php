@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 
 class BoardingHouseController extends Controller
 {
+    public function show(BoardingHouse $boardingHouse)
+    {
+        $boardingHouse->load(['boardingHouseImages', 'facilities', 'rooms', 'testimonials', 'city', 'category']);
+
+        return view('pages.boarding-house.show', compact('boardingHouse'));
+    }
+
     public function find()
     {
         $cities = City::query()->get();

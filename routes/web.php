@@ -31,6 +31,7 @@ Route::controller(BoardingHouseController::class)
     ->group(function () {
         Route::get('/find', 'find')->name('find');
         Route::get('/find-result', 'findResult')->name('find-result');
+        Route::get('/{boardingHouse:slug}', 'show')->name('show');
     });
 
 Route::controller(TransactionController::class)
