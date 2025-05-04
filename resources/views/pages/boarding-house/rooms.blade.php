@@ -35,7 +35,8 @@
         </div>
     </div>
 
-    <form action="cust-info.html" class="relative flex flex-col gap-4 mt-5">
+    <form action="{{ route('transaction.boarding-house-room.save') }}" method="POST"
+        class="relative flex flex-col gap-4 mt-5">
         @csrf
         <input type="hidden" name="boarding_house_id" value="{{ $boardingHouse->id }}">
 

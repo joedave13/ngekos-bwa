@@ -40,4 +40,12 @@ Route::controller(TransactionController::class)
     ->name('transaction.')
     ->group(function () {
         Route::get('/check', 'check')->name('check');
+
+        Route::post('/boarding-house-room/save', 'saveBoardingHouseRoom')->name('boarding-house-room.save');
+
+        Route::get('customer-information', 'customerInformation')->name('customer-information');
+        Route::post('customer-information', 'saveCustomerInformation')->name('customer-information.save');
+
+        Route::get('checkout', 'checkout')->name('checkout');
+        Route::post('checkout', 'checkoutSave')->name('checkout.save');
     });
