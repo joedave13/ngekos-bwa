@@ -168,7 +168,7 @@
                     <br>
                     <span class="text-sm font-normal"> / month</span>
                 </p>
-                <a href="room-available.html"
+                <a href="{{ route('boarding-house.show-available-room', $boardingHouse) }}"
                     class="flex shrink-0 rounded-full py-[14px] px-5 bg-ngekos-orange font-bold text-white">Book
                     Now</a>
             </div>

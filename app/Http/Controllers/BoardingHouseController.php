@@ -16,6 +16,13 @@ class BoardingHouseController extends Controller
         return view('pages.boarding-house.show', compact('boardingHouse'));
     }
 
+    public function showAvailableRoom(BoardingHouse $boardingHouse)
+    {
+        $boardingHouse->load(['rooms', 'city', 'category']);
+
+        return view('pages.boarding-house.rooms', compact('boardingHouse'));
+    }
+
     public function find()
     {
         $cities = City::query()->get();

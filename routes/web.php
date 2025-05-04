@@ -32,6 +32,7 @@ Route::controller(BoardingHouseController::class)
         Route::get('/find', 'find')->name('find');
         Route::get('/find-result', 'findResult')->name('find-result');
         Route::get('/{boardingHouse:slug}', 'show')->name('show');
+        Route::get('/{boardingHouse:slug}/rooms', 'showAvailableRoom')->name('show-available-room');
     });
 
 Route::controller(TransactionController::class)
