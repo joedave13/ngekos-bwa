@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Transaction\CheckoutRequest;
 use App\Http\Requests\Transaction\StoreBoardingHouseRoomRequest;
 use App\Http\Requests\Transaction\StoreCustomerInformationRequest;
 use App\Models\BoardingHouse;
 use App\Models\Room;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class TransactionController extends Controller
 {
@@ -76,6 +79,32 @@ class TransactionController extends Controller
         $data['fp_grand_total'] = $data['sub_total'] + $data['ppn'] + $data['insurance'];
 
         return view('pages.transaction.checkout', compact('boardingHouse', 'room', 'data'));
+    }
+
+    public function checkoutSave(CheckoutRequest $request)
+    {
+        $validated = $request->validated();
+        $session = Session::get('transaction_data', []);
+
+        if (!$session) {
+            return redirect()->route('home.index');
+        }
+
+        $data = array_merge($session, $validated);
+        $data['code'] = 'TRX' . Carbon::now()->format('ymd') . strtoupper(Str::random(5));
+        $data['sub_total'] = $data['boarding_house_price'] + ($data['room_price'] * $data['duration_in_month']);
+        $data['vat'] = 0.11 * $data['sub_total'];
+        $data['insurance_amount'] = 600000;
+
+        if ($validated['payment_method'] == 'down_payment') {
+            $data['grand_total_amount'] = 0.3 * ($data['sub_total'] + $data['vat'] + $data['insurance_amount']);
+        } else {
+            $data['grand_total_amount'] = $data['sub_total'] + $data['vat'] + $data['insurance_amount'];
+        }
+
+        $transaction = Transaction::query()->create($data);
+
+        Session::forget('transaction_data');
     }
 
     public function check()

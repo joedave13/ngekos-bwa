@@ -143,7 +143,7 @@
     </div>
     {{-- End Booking --}}
 
-    <form action="success-booking.html" method="POST" class="relative flex flex-col gap-6 mt-5 pt-5">
+    <form action="{{ route('transaction.checkout.save') }}" method="POST" class="relative flex flex-col gap-6 mt-5 pt-5">
         @csrf
 
         <div id="PaymentOptions" class="flex flex-col rounded-[30px] border border-[#F1F2F6] p-5 gap-4 mx-5">
