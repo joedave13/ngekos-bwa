@@ -1090,6 +1090,10 @@ video {
   background-image: linear-gradient(180deg,#F2F9E6 0%,#D2EDE4 100%);
 }
 
+.bg-red-600 {
+  background-color: rgb(220 38 38 / var(--tw-bg-opacity, 1));
+}
+
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;

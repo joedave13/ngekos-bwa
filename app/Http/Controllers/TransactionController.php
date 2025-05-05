@@ -146,6 +146,13 @@ class TransactionController extends Controller
         return view('pages.transaction.success', compact('transaction'));
     }
 
+    public function show(Transaction $transaction)
+    {
+        $transaction->load(['boardingHouse', 'boardingHouse.city', 'boardingHouse.category', 'room']);
+
+        return view('pages.transaction.show', compact('transaction'));
+    }
+
     public function check()
     {
         return view('pages.transaction.check');
