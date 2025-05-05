@@ -40,6 +40,7 @@ Route::controller(TransactionController::class)
     ->name('transaction.')
     ->group(function () {
         Route::get('/check', 'check')->name('check');
+        Route::post('/check', 'checkResult')->name('check-result');
 
         Route::post('/boarding-house-room/save', 'saveBoardingHouseRoom')->name('boarding-house-room.save');
 

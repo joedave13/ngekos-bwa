@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Transaction\CheckoutRequest;
+use App\Http\Requests\Transaction\CheckTransactionRequest;
 use App\Http\Requests\Transaction\StoreBoardingHouseRoomRequest;
 use App\Http\Requests\Transaction\StoreCustomerInformationRequest;
 use App\Models\BoardingHouse;
@@ -156,5 +157,22 @@ class TransactionController extends Controller
     public function check()
     {
         return view('pages.transaction.check');
+    }
+
+    public function checkResult(CheckTransactionRequest $request)
+    {
+        $validated = $request->validated();
+
+        $transaction = Transaction::with(['boardingHouse', 'boardingHouse.city', 'boardingHouse.category', 'room'])
+            ->where('code', $validated['code'])
+            ->where('email', $validated['email'])
+            ->where('phone', $validated['phone'])
+            ->first();
+
+        if (!$transaction) {
+            return redirect()->back();
+        }
+
+        return redirect()->route('transaction.show', $transaction);
     }
 }
