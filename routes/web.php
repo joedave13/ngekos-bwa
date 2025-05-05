@@ -49,5 +49,7 @@ Route::controller(TransactionController::class)
         Route::get('/checkout', 'checkout')->name('checkout');
         Route::post('/checkout', 'checkoutSave')->name('checkout.save');
 
-        Route::get('success', 'success')->name('success');
+        Route::get('/success', 'success')->name('success');
+
+        Route::get('/{transaction:code}', 'show')->name('show');
     });

@@ -137,7 +137,13 @@ class TransactionController extends Controller
 
     public function success(Request $request)
     {
-        return view('pages.transaction.success');
+        $midtransOrderId = $request->order_id;
+
+        $transaction = Transaction::with(['boardingHouse', 'boardingHouse.city', 'boardingHouse.category', 'room'])
+            ->where('code', $midtransOrderId)
+            ->first();
+
+        return view('pages.transaction.success', compact('transaction'));
     }
 
     public function check()
